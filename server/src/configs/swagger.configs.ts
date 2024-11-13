@@ -4,7 +4,7 @@ export const swaggerConfigs = swagger({
     path: '/api-doc',
     documentation: {
         info: {
-            title: "Tinner AppvAPI",
+            title: "Tinner AppvAPII",
             version: "1.0.1"
         }
 

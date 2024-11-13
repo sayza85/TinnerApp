@@ -4,7 +4,7 @@ export const example = new Elysia()
         detail: {
             tages: ["Example"],
             sumary: "Get Example Object",
-            desdription: "Hello54321"
+            desdription: "Hello543211"
         }
     })
     .post("/about/", ({ body }) => {
