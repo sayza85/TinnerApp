@@ -1,5 +1,3 @@
-import { password } from "bun"
-import { profile } from "bun:jsc"
 import Elysia, { Static, t } from "elysia"
 import { _user } from "./user.type"
 import { _register } from "./register.type"

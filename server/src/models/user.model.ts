@@ -1,6 +1,7 @@
 import mongoose from "mongoose"
 import { IUserDocument, IuserModel } from "../interfaces/user.interface"
-import { user, register } from '../types/account.types'
+import { register } from "../types/register.type"
+import { user } from "../types/user.type"
 
 const schema = new mongoose.Schema<IUserDocument, IuserModel>({
     username: { type: String, required: true, unique: true },
@@ -29,23 +30,23 @@ schema.methods.toUser = function (): user {
 
 
     // todo: implement like feature
-    // const userPhotos = Array.isArray(this.photos)
-    //     ? this.photos.map(photo => (new Photo(photo)).toPhoto())
-    //     : undefined
+    const userPhotos = Array.isArray(this.photos)
+        ? this.photos.map(photo => (new photo(photo)).toPhoto())
+        : undefined
 
-    // const parseLikeUser = (user: IUserDocument[]) => {
-    //     return user.map(u => {
-    //         if (u.display_name)
-    //             return u.toUser()
-    //         return u._id!.toString()
-    //     })
-    // }
-    // const following = Array.isArray(this.following)
-    //     ? parseLikeUser(this.following)
-    //     : undefined
-    // const followers = Array.isArray(this.followers)
-    //     ? parseLikeUser(this.followers)
-    //     : undefined
+    const parseLikeUser = (user: IUserDocument[]) => {
+        return user.map(u => {
+            if (u.display_name)
+                return u.toUser()
+            return u._id!.toString()
+        })
+    }
+    const following = Array.isArray(this.following)
+        ? parseLikeUser(this.following)
+        : undefined
+    const followers = Array.isArray(this.followers)
+        ? parseLikeUser(this.followers)
+        : undefined
 
     return {
         id: this._id.toString(),

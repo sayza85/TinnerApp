@@ -35,6 +35,12 @@ export const QueryHelper = {
         if (age_filter.$gte || age_filter.$lte)
             filter.push({ date_of_birth: age_filter })
 
+        if (query.gender && query.gender != "all") {
+            const regEx = new RegExp(`\\b${query.gender.trim()}`, 'i')
+            const _filter = { gender: { $regex: regEx } }
+            filter.push(_filter)
+        }
+
         return filter
     },
 
