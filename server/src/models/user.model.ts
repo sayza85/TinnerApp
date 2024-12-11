@@ -13,10 +13,10 @@ const schema = new mongoose.Schema<IUserDocument, IuserModel>({
     interest: { type: String },
     looking_for: { type: String },
     location: { type: String },
-    gender: { type: String }
+    gender: { type: String },
 
     // todo: implement photo feature
-    // photos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Photo' }],
+    photos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Photo' }],
     // todo: implement like feature
     // followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     // following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
@@ -61,9 +61,9 @@ schema.methods.toUser = function (): user {
         interest: this.interest,
         looking_for: this.looking_for,
         location: this.location,
-        gender: this.gender
+        gender: this.gender,
         // todo: photo feature
-        // photos: userPhotos,
+        photos: userPhotos,
         // todo: like feature
         // following: following,
         // followers: followers,

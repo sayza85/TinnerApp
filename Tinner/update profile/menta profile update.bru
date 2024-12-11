@@ -4,17 +4,20 @@ meta {
   seq: 1
 }
 
-get {
-  url: {{tinner_url}}/user/?pageSize=2&currentPage=1
-  body: none
+patch {
+  url: {{tinner_url}}/user/
+  body: json
   auth: none
-}
-
-params:query {
-  pageSize: 2
-  currentPage: 1
 }
 
 headers {
   authorization: Bearer {{menta_token}}
+}
+
+body:json {
+  {
+    "display_name":"eiei",
+    "lookink_for":"all",
+    
+  }
 }
