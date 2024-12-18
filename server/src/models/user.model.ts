@@ -15,11 +15,11 @@ const schema = new mongoose.Schema<IUserDocument, IuserModel>({
     location: { type: String },
     gender: { type: String },
 
-    // todo: implement photo feature
+
     photos: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Photo' }],
-    // todo: implement like feature
-    // followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
-    // following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+
+    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    following: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
 }, {
     timestamps: { createdAt: 'created_at', updatedAt: 'updated_at' }
 })
@@ -62,11 +62,11 @@ schema.methods.toUser = function (): user {
         looking_for: this.looking_for,
         location: this.location,
         gender: this.gender,
-        // todo: photo feature
+
         photos: userPhotos,
-        // todo: like feature
-        // following: following,
-        // followers: followers,
+
+        following: following,
+        followers: followers,
     }
 }
 

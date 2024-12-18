@@ -43,6 +43,6 @@ export const Usercontroller = new Elysia({
     }, {
         detail: { summary: "Update Profile" },
         body: "updateProfile",
-        response: "user",
+        // response: "user",
         isSignIn: true
     })

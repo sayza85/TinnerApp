@@ -2,10 +2,21 @@ import { User } from '../models/user.model'
 import { login } from '../types/account.types'
 import { register } from '../types/register.type'
 import { user } from '../types/user.type'
+
 export const
     AccountService = {
         login: async function (loginData: login): Promise<user> {
-            const user = await User.findOne({ username: loginData.username }).populate("photos").exec()
+            const user = await User.findOne({ username: loginData.username })
+                .populate("photos")
+                .populate({
+                    path: "following",
+                    select:"_id"
+                })
+                .populate({
+                    path: "followers",
+                    select:"_id"
+                })
+                .exec()
 
             if (!user)
                 throw new Error("User does not exist")
@@ -20,5 +31,5 @@ export const
                 throw new Error(`${registerData.username}already exists`)
             const newUser = await User.createUser(registerData)
             return newUser.toUser()
-        }, //login: function () { }
+        },
     }

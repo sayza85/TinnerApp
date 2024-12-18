@@ -1,5 +1,5 @@
 import Elysia, { Static, t } from "elysia"
-import { _updateProfile } from './user.type'
+
 
 export const _photo = t.Object({
     id: t.Optional(t.String()),
@@ -10,7 +10,7 @@ export const _photo = t.Object({
 })
 export const _uploadPhoto = t.Object({
     file: t.File({
-        type: ['image/gpeg,image/png'],
+        type: ['image/jpeg,image/png'],
         maxSize: '1m',
         error: 'image must be .jpeg or .png'
     })
@@ -18,5 +18,8 @@ export const _uploadPhoto = t.Object({
 export type photo = Static<typeof _photo>
 export const PhotoDto = new Elysia().model({
     _upload: _uploadPhoto,
-    photo: t.Array(_photo)
+    // params: t.Object({ photo_id: t.String() }),
+    photo: _photo,
+    photos: t.Array(_photo),
+    photo_id: t.Object({ photo_id: t.String() })
 })
