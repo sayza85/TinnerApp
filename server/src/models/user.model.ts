@@ -2,6 +2,7 @@ import mongoose from "mongoose"
 import { IUserDocument, IuserModel } from "../interfaces/user.interface"
 import { register } from "../types/register.type"
 import { user } from "../types/user.type"
+import { calculateAge } from "../helpers/date.helper"
 
 const schema = new mongoose.Schema<IUserDocument, IuserModel>({
     username: { type: String, required: true, unique: true },
@@ -59,7 +60,7 @@ schema.methods.toUser = function (): user {
         last_active: this.last_active,
         introduction: this.introduction,
         interest: this.interest,
-        looking_for: this.looking_for,
+        looking_for: this.looking_for ?? 'all',
         location: this.location,
         gender: this.gender,
 
@@ -70,9 +71,6 @@ schema.methods.toUser = function (): user {
     }
 }
 
-function calculateAge(date_of_birth: any) {
-    throw new Error("Function not implemented.")
-}
 schema.methods.verifyPassword = async function (password: string): Promise<boolean> {
     return await Bun.password.verify(password, this.password_hash)
 }
