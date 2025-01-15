@@ -1,3 +1,4 @@
+
 <div class="login-container">
   <form (ngSubmit)="onSubmit()" [formGroup]="form" autocomplete="off">
     <mat-form-field appearance="outline">
@@ -20,28 +21,30 @@
         formControlName="confirm_password">
       <mat-error>{{errorMessages.password()}}</mat-error>
     </mat-form-field>
-
+<div>
     <mat-form-field appearance="outline">
       <mat-label>Date of Birth</mat-label>
       <input matInput [min]="minDate" [max]="maxDate" [matDatepicker]="picker" formControlName="date_of_birth">
       <mat-datepicker-toggle [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
-
+  </div>
+<div>
     <mat-form-field appearance="outline">
       <mat-label>Display Name</mat-label>
       <input matInput placeholder="display_name" type="text" (input)="updateErrorMessage('display_name')"
         formControlName="display_name">
       <mat-error>{{errorMessages.display_name()}}</mat-error>
     </mat-form-field>
-
+  </div>
+<div>
     <label class="example-margin">Gender</label>
     <mat-radio-group formControlName="gender">
       <mat-radio-button value="male">Male</mat-radio-button>
       <mat-radio-button value="female">Female</mat-radio-button>
       <mat-radio-button value="all">LGBTQ+</mat-radio-button>
     </mat-radio-group> 
-
+  </div>
     <label class="example-margin">Looking For</label>
     <mat-radio-group formControlName="looking_for">
       <mat-radio-button value="male">Male</mat-radio-button>
