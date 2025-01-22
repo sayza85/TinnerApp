@@ -1,26 +1,34 @@
-import { Component, signal } from '@angular/core'
+import { Component, inject, signal } from '@angular/core'
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms'
+import { CommonModule } from '@angular/common'
+import { MatFormFieldModule } from '@angular/material/form-field'
+import { MatInputModule } from '@angular/material/input'
+import { MatButtonModule } from '@angular/material/button'
+import { MatDatepickerModule } from '@angular/material/datepicker'
+import { MatRadioModule } from '@angular/material/radio'
+import { provideNativeDateAdapter } from '@angular/material/core'
+import { MatCardModule } from '@angular/material/card'
+
+import { Router } from '@angular/router'
+import { AccountService } from '../_service/account.service'
 import { PasswordMatchValidator } from '../_validator/password.matdc.validator'
 import { PasswordValidator } from '../_validator/password.validator'
-import { CommonModule } from '@angular/common'
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatInputModule} from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button'
-import { provideNativeDateAdapter } from '@angular/material/core'
-import { MatRadioModule } from '@angular/material/radio';
-import {MatDatepickerModule} from '@angular/material/datepicker';
 
 @Component({
   selector: 'app-login',
-  imports: [FormsModule,ReactiveFormsModule,CommonModule,MatFormFieldModule,MatInputModule,MatButtonModule,MatRadioModule,MatDatepickerModule],
+  imports: [MatCardModule, MatRadioModule, ReactiveFormsModule, CommonModule, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatDatepickerModule],
   templateUrl: './login.component.html',
+  styleUrl: './login.component.scss',
   providers: [provideNativeDateAdapter()],
-  styleUrl: './login.component.scss'
 })
 export class LoginComponent {
   mode: 'login' | 'register' = 'login'
   form: FormGroup
+
+  private accountService = inject(AccountService)
+  private router = inject(Router)
   private readonly _currentYear = new Date().getFullYear()
+  errorFormServer = ''
   readonly minDate = new Date(this._currentYear - 70, 0, 1)
   readonly maxDate = new Date(this._currentYear - 18, 11, 31)
   readonly startDate = new Date(this._currentYear - 18, 0, 1)
@@ -34,7 +42,7 @@ export class LoginComponent {
 
   constructor() {
     this.form = new FormGroup({
-      username: new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
+      username: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(9)]),
       password: new FormControl(null, [Validators.required, PasswordValidator(8, 16)]),
     })
   }
@@ -62,8 +70,16 @@ export class LoginComponent {
     }
   }
 
-  onSubmit() {
+  async onSubmit() {
+    // console.log(this.form.value)
+    if (this.mode === 'login') {
+      this.errorFormServer = await this.accountService.login(this.form.value)
+    } else {//register
+      this.errorFormServer = await this.accountService.register(this.form.value)
+    }
 
+    if (this.errorFormServer === '')
+      this.router.navigate(['/'])
   }
 
   updateErrorMessage(ctrlName: string) {
@@ -72,6 +88,8 @@ export class LoginComponent {
 
     switch (ctrlName) {
       case 'username':
+        // console.log('minLength: ' + control.hasError('minlength'))
+        // console.log('maxLength: ' + control.hasError('maxlength'))
         if (control.hasError('required'))
           this.errorMessages.username.set('required')
         else if (control.hasError('minlength'))
@@ -80,6 +98,7 @@ export class LoginComponent {
           this.errorMessages.username.set('must be 16 characters or fewer')
         else
           this.errorMessages.username.set('')
+        // console.log(this.errorMessages.username())
         break
 
       case 'password':
@@ -112,9 +131,9 @@ export class LoginComponent {
       case 'display_name':
         if (control.hasError('required'))
           this.errorMessages.display_name.set('required')
-        else if (control.hasError('minength'))
+        else if (control.hasError('minlength'))
           this.errorMessages.display_name.set('must be at least 3 characters long')
-        else if (control.hasError('maxength'))
+        else if (control.hasError('maxlength'))
           this.errorMessages.display_name.set('must be 8 characters or fewer')
         else
           this.errorMessages.display_name.set('')
