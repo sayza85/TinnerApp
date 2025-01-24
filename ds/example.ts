@@ -10,3 +10,4 @@ function bar(args: Number[]) {
     console.log(text)
 
 }
+

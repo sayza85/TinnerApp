@@ -10,6 +10,7 @@ import { Usercontroller } from './controllers/user.controller'
 import staticPlugin from "@elysiajs/static"
 import { PhotoController } from "./controllers/photo.controllers"
 import { LikeController } from "./controllers/like.controllers"
+import { ErrorController } from "./controllers/errorcontroller"
 
 MongoDB.connect()
 
@@ -32,6 +33,7 @@ const app = new Elysia()
     port: Bun.env.PORT || 8000,
     tls: tlsConfigs
   })
+  .use(ErrorController)
 
 let protocol = 'http'
 if ('cert' in tlsConfigs)

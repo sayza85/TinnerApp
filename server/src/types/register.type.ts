@@ -8,4 +8,4 @@ export const _register = t.Object({
     looking_for: t.Union([t.Literal('male'), t.Literal('female'), t.Literal('all')]),
     gender: t.Optional(t.Union([t.Literal('male'), t.Literal('female'), t.Literal('all')])),
 })
-export type register = Static<typeof _register>
+// export type register = Static<typeof _register>

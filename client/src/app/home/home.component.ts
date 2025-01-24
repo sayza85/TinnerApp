@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core'
+import { environment } from '../../environments/environment'
+import { HttpClient } from '@angular/common/http'
 
 @Component({
   selector: 'app-home',
@@ -7,5 +9,6 @@ import { Component } from '@angular/core';
   styleUrl: './home.component.scss'
 })
 export class HomeComponent {
+  private http = inject(HttpClient)
 
 }

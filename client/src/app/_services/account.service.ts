@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http'
 
 import { firstValueFrom } from 'rxjs'
 import { User } from '../_models/users'
+import { parseUserPhotos } from '../_helper/helper'
 
 @Injectable({
   providedIn: 'root'
@@ -19,24 +20,24 @@ export class AccountService {
   constructor() {
     this.loadDataFromLocalStorage()
   }
-
+  // #region login_and_register
   logout() {
     localStorage.removeItem(this._key)
     this.data.set(null)
   }
 
-  async login(loginData: {username: string, password: string }): Promise<string> {
+  async login(loginData: { username: string, password: string }): Promise<string> {
     try {
       const url = this._baseApiUrl + 'login'
       const response = this._http.post<{ user: User, token: string }>(url, loginData)
       const data = await firstValueFrom(response)
-      data.user = parseUserPhoto(data.user)
+      data.user = parseUserPhotos(data.user)
       this.data.set(data)
       this.saveDataToLocalStorage()
       return ''
     } catch (error: any) {
-      console.log(error);
-      
+      console.log(error)
+
       return error.error?.message
 
     }
@@ -46,7 +47,7 @@ export class AccountService {
       const url = this._baseApiUrl + 'register'
       const response = this._http.post<{ user: User, token: string }>(url, registerData)
       const data = await firstValueFrom(response)
-      data.user = parseUserPhoto(data.user)
+      data.user = parseUserPhotos(data.user)
       this.data.set(data)
       this.saveDataToLocalStorage()
       return ''
@@ -67,8 +68,20 @@ export class AccountService {
       this.data.set(data)
     }
   }
-}
-
-function parseUserPhoto(user: User): User {
-  throw new Error('Function not implemented.')
+  async updateProfile(user: User): Promise<boolean> {
+    const url = environment.baseUrl + 'api/user'
+    try {
+      const response = this._http.patch(url, user)
+      await firstValueFrom(response)
+      const currentData = this.data()
+      if (currentData) {
+        currentData.user = user
+        this.data.set(currentData)
+        this.saveDataToLocalStorage()
+      }
+    } catch (error) {
+      return false
+    }
+    return true
+  }
 }

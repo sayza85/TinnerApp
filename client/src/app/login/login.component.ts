@@ -10,7 +10,7 @@ import { provideNativeDateAdapter } from '@angular/material/core'
 import { MatCardModule } from '@angular/material/card'
 
 import { Router } from '@angular/router'
-import { AccountService } from '../_service/account.service'
+import { AccountService } from '../_services/account.service'
 import { PasswordMatchValidator } from '../_validator/password.matdc.validator'
 import { PasswordValidator } from '../_validator/password.validator'
 

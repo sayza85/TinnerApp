@@ -4,7 +4,7 @@ import { MatButtonModule } from '@angular/material/button'
 import { MatToolbarModule } from '@angular/material/toolbar'
 import { MatMenuModule } from '@angular/material/menu'
 import { Router, RouterLink, RouterLinkActive } from '@angular/router'
-import { AccountService } from '../_service/account.service'
+import { AccountService } from '../_services/account.service'
 
 
 @Component({
