@@ -1,7 +1,6 @@
 import { User } from '../models/user.model'
-import { login } from '../types/account.types'
-import { register } from '../types/register.type'
-import { user } from '../types/user.type'
+import { login, register } from '../types/account.types'
+import { user } from '../types/user.type';
 
 export const
     AccountService = {
@@ -32,4 +31,6 @@ export const
             const newUser = await User.createUser(registerData)
             return newUser.toUser()
         },
+       
     }
+    

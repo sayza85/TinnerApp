@@ -1,4 +1,11 @@
-import { $, file } from 'bun'
+
+
+
+
+
+
+
+
 import { Cloudinary } from '../configs/cloudinary.configs'
 import { ImageHelper } from '../helpers/image.helpers'
 import { _uploadPhoto, photo } from '../types/photo.type'
@@ -43,29 +50,34 @@ export const PhotoService = {
     },
     getPhotos: async function (user_id: string): Promise<photo[]> {
         const photoDocs = await Photo.find({ user: user_id }).exec()
-        return photoDocs.map(doc => doc.toPhoto())
+        const photos = photoDocs.map(doc => doc.toPhoto())
+        return photos
     },
     delete: async function (photo_id: string): Promise<boolean> {
         const doc = await Photo.findById(photo_id).exec()
-        if (!doc)
+        if (!doc) {
             throw new Error(`photo ${photo_id}not`)
+        }
         await User.findByIdAndUpdate(doc.user, {
             $pull: { photos: photo_id }
         })
         await Photo.findByIdAndDelete(photo_id)
         await Cloudinary.uploader.destroy(doc.public_id)
         return true
-    },
-    setAvatar: async function (photo_id: string, user_id: string): Promise<boolean> {
+      
+        },
+       
+    
+     async setAvatar(photo_id: string, user_id: string): Promise<boolean> {
         await Photo.updateMany(
         { user: new mongoose.Types.ObjectId(user_id) },
         { $set: { is_avatar: false } }
     )
-        const result = await Photo.findByIdAndUpdate(photo_id,
+        const upDatephoto = await Photo.findByIdAndUpdate(photo_id,
             { $set:{ is_avatar: true }},
-            { new: true }
+             { new: true }
         )
-        return !!result
+        return !!upDatephoto
         
 
     },

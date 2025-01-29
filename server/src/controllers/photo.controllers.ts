@@ -8,7 +8,7 @@ import { file } from 'bun'
 
 
 export const PhotoController = new Elysia({
-    prefix: "api/photo",
+    prefix: "api/photo/",
     tags: ["Photo"]
 })
     .use(PhotoDto)
@@ -58,10 +58,10 @@ export const PhotoController = new Elysia({
         isSignIn: true,
         response: "photos"
     })
-    .post('/', async ({ body, set, Auth }) => {
+    .post('/', async ({ body: { file }, set, Auth }) => {
         const user_id = (Auth.payload as AuthPayload).id
         try {
-            return await PhotoService.upload(body.file, user_id)
+            return await PhotoService.upload(file, user_id)
         } catch (error) {
             set.status = "Bad Request"
             if (error instanceof Error)
