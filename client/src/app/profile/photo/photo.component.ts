@@ -7,8 +7,8 @@ import { CommonModule } from '@angular/common'
 import { MatDialog } from '@angular/material/dialog'
 import { UploadPhotoComponent } from '../../_dialogs/upload-photo/upload-photo.component'
 import { AccountService } from '../../_services/account.service'
-import { TimeagoModule, TimeagoIntl, TimeagoFormatter, TimeagoClock, TimeagoDefaultClock, TimeagoCustomFormatter } from 'ngx-timeago';
-import{strings as engStrings} from 'ngx-timeago/language-strings/en.js'
+import { TimeagoModule, TimeagoIntl, TimeagoFormatter, TimeagoClock, TimeagoDefaultClock, TimeagoCustomFormatter } from 'ngx-timeago'
+import { strings as engStrings } from 'ngx-timeago/language-strings/en.js'
 // @Injectable()
 // class MyIntl extends TimeagoIntl {
 
@@ -26,9 +26,9 @@ import{strings as engStrings} from 'ngx-timeago/language-strings/en.js'
 })
 export class PhotoComponent {
   user = input.required<User>()
-  intl = inject(TimeagoIntl)
+  // intl = inject(TimeagoIntl)
 
-  constructor() {
+  constructor(private intl: TimeagoIntl) {
     this.intl.strings = engStrings
     this.intl.changes.next()
   }
@@ -42,11 +42,11 @@ export class PhotoComponent {
   }
 
   deletePhoto(photo_id: string) {
-    this.accountService.deletPhoto
+    this.accountService.deletPhoto(photo_id)
   }
-   
+
   setAvatar(photo_id: string) {
-    this.accountService.setAvatar
+    this.accountService.setAvatar(photo_id)
   }
 }
 

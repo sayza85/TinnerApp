@@ -24,9 +24,7 @@ export class ProfileComponent {
     this.user = this.accountService.data()!.user
   }
   onSubmit() { 
-    this.accountService.updateProfile(this.form!.value).then(res => {
-      
-    })
+    this.accountService.updateProfile(this.form?.value)
   }
 }
 

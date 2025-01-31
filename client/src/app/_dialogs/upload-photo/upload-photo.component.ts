@@ -1,9 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core'
 import { CommonModule } from '@angular/common'
 import { fileTypeFromBlob } from 'file-type'
-
-
-
 import {
   MatDialogActions,
   MatDialogContent,
@@ -20,7 +17,7 @@ import {
 
 })
 export class UploadPhotoComponent {
-  acceptedImageTypes = ['image/jpeg', 'image/png']
+  acceptedImageTypes = ['img/jpeg', 'image/png']
   imgFile: File | undefined
   imgPreview = signal<undefined | string>(undefined)
   errMessage = signal<undefined | string>(undefined)
