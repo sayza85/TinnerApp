@@ -2,7 +2,7 @@ import Elysia, { error, t } from "elysia"
 import { PhotoDto } from "../types/photo.type"
 import { AuthMiddleWare, AuthPayload } from '../middleware/auth.middlewar'
 import { PhotoService } from "../services/photo.services"
-import { file } from 'bun'
+
 
 
 

@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http'
 import { inject, Injectable, signal } from '@angular/core'
 import { environment } from '../../environments/environment'
 import { cacheManager } from '../_helper/cache'
-import { pareQuery } from '../_helper/helper'
+import { pareQuery, parseUserPhoto } from '../_helper/helper'
 import { default_paginator, Paginator, UserQueryPagination } from '../_models/pagination'
 import { User } from '../_models/users'
+import { firstValueFrom } from 'rxjs'
 
 
 
@@ -17,6 +18,7 @@ export class MemberService {
   private url = environment.baseUrl + 'api/' //user
 
   paginator = signal<Paginator<UserQueryPagination, User>>(default_paginator)
+  snapshot: any
 
   private getData(category: dataCategory) {
     const pagination = this.paginator().pagination
@@ -42,5 +44,24 @@ export class MemberService {
   }
   getMembers() {
     this.getData('member')
+  }
+  async getMemberByUsername(username: string): Promise<User | undefined> {
+    const member = this.paginator().items.find(obj => obj.username == username)
+    if (member) {
+      console.log('get form cache')
+
+      return member
+    } else try {
+      {
+        console.log('get form api')
+        const url = this.url + 'user/username/?username=' + username
+        const _member = await firstValueFrom(this.http.get<User>(url))
+        return parseUserPhoto(_member)
+      }
+    } catch (error) {
+      console.log('get form server', error)
+
+    }
+    return undefined
   }
 }

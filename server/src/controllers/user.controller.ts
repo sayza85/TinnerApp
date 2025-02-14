@@ -1,6 +1,6 @@
-import Elysia from "elysia"
+import Elysia, { t } from "elysia"
 import { AuthMiddleWare, AuthPayload } from '../middleware/auth.middlewar'
-import { UserDto } from '../types/user.type'
+import { UserDto, user } from '../types/user.type';
 import { UserService } from "../services/user.services"
 
 export const Usercontroller = new Elysia({
@@ -9,6 +9,14 @@ export const Usercontroller = new Elysia({
 })
     .use(AuthMiddleWare)
     .use(UserDto)
+    .get('/:username', ({ params: { username } }) => {
+        return UserService.getByUserName(username)
+    }, {
+        detail: { summary: "Get User By Username" },
+        response: "user",
+        isSignIn: true
+
+    })
     .get('/all', () => {
 
         return {

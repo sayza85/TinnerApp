@@ -6,6 +6,7 @@ import { firstValueFrom } from 'rxjs'
 import { User } from '../_models/users'
 import { Photo } from '../_models/photo'
 import { parseUserPhoto } from '../_helper/helper'
+import { cacheManager } from '../_helper/cache'
 
 
 @Injectable({
@@ -25,6 +26,7 @@ export class AccountService {
   logout() {
     localStorage.removeItem(this._key)
     this.data.set(null)
+    cacheManager.clear('all')
   }
 
   async login(loginData: { username: string, password: string }): Promise<string> {
@@ -101,7 +103,7 @@ export class AccountService {
         if (!user.photos)
           user.photos = []
         user.photos.push(photo)
-        this.setUser(user)
+        this.SetUser(user)
         return true
       }
     } catch (error) {
@@ -109,8 +111,15 @@ export class AccountService {
     }
     return false
   }
+  public SetUser(user: User) {
+    this.SetUser(user)
+  }
   private setUser(user: User) {
-    this.setUser(user)
+    const copyData = this.data()
+    if (copyData)
+      copyData.user = user
+    this.data.set(copyData)
+    this.saveDataToLocalStorage()
   }
 
   async setAvatar(photo_id: string): Promise<void> {
@@ -125,7 +134,7 @@ export class AccountService {
           return p
         })
         user.photos = photos
-        this.setUser(user)
+        this.SetUser(user)
       }
     } catch (error) {
 
@@ -140,7 +149,7 @@ export class AccountService {
         if (user) {
             const photos = user.photos?.filter(p => p.id !== photo_id)
             user.photos = photos
-            this.setUser(user)
+            this.SetUser(user)
             
        } 
     } catch (error) {
