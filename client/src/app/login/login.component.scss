@@ -62,8 +62,9 @@ form {
         color: rgb(24, 80, 233);
         cursor: pointer;
     }
-    .err{
-        color: red;
-        font-size: small;
-    }
+}
+
+.error {
+    color: red;
+    font-size: medium;
 }

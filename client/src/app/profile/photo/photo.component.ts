@@ -1,40 +1,46 @@
 import { Component, inject, Injectable, input } from '@angular/core'
-import { User } from '../../_models/users'
+import { User } from '../../_models/user'
 import { MatButtonModule } from '@angular/material/button'
-import { MatIconModule } from '@angular/material/icon'
 import { MatCardModule } from '@angular/material/card'
+import { MatIconModule } from '@angular/material/icon'
 import { CommonModule } from '@angular/common'
 import { MatDialog } from '@angular/material/dialog'
 import { UploadPhotoComponent } from '../../_dialogs/upload-photo/upload-photo.component'
 import { AccountService } from '../../_services/account.service'
-import { TimeagoModule, TimeagoIntl, TimeagoFormatter, TimeagoClock, TimeagoDefaultClock, TimeagoCustomFormatter } from 'ngx-timeago'
-import { strings as engStrings } from 'ngx-timeago/language-strings/en.js'
-// @Injectable()
-// class MyIntl extends TimeagoIntl {
+import { TimeagoClock, TimeagoCustomFormatter, TimeagoDefaultClock, TimeagoFormatter, TimeagoIntl, TimeagoModule } from 'ngx-timeago'
+import { strings as engString } from 'ngx-timeago/language-strings/en.js'
+import { strings as japString } from 'ngx-timeago/language-strings/ja.js'
 
-// } 
+// @Injectable() // This is a decorator that marks a class as available to be provided and injected as a dependency.
+// class MyIntl extends TimeagoIntl { }
+
 @Component({
   selector: 'app-photo',
-  imports: [MatButtonModule, MatIconModule, MatCardModule, CommonModule, TimeagoModule],
   templateUrl: './photo.component.html',
-  styleUrl: './photo.component.scss',
+  styleUrls: ['./photo.component.scss'],
+  imports: [MatButtonModule, MatIconModule, MatCardModule, CommonModule, TimeagoModule],
   providers: [
     { provide: TimeagoIntl, useClass: TimeagoIntl },
     { provide: TimeagoFormatter, useClass: TimeagoCustomFormatter },
     { provide: TimeagoClock, useClass: TimeagoDefaultClock }
-  ],
+  ]
 })
+
 export class PhotoComponent {
-  user = input.required<User>()
   // intl = inject(TimeagoIntl)
+  user = input.required<User>()
 
   constructor(private intl: TimeagoIntl) {
-    this.intl.strings = engStrings
+    // this.intl.strings = engString
+    this.intl.strings = japString
     this.intl.changes.next()
   }
-  private dialog = inject(MatDialog)
+
   private accountService = inject(AccountService)
-  openAddphotoDialog() {
+  private dialog = inject(MatDialog)
+
+
+  openAddPhotoDialog() {
     const ref = this.dialog.open(UploadPhotoComponent)
     ref.afterClosed().subscribe(async file => {
       await this.accountService.uploadPhoto(file)
@@ -42,13 +48,10 @@ export class PhotoComponent {
   }
 
   deletePhoto(photo_id: string) {
-    this.accountService.deletPhoto(photo_id)
+    this.accountService.deletePhoto(photo_id)
   }
-
   setAvatar(photo_id: string) {
     this.accountService.setAvatar(photo_id)
   }
 }
-
-
 

@@ -1,29 +1,30 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core'
 import { NgxSpinnerService } from 'ngx-spinner'
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoadingService {
-  loaddigRequestCount = 0
-  
-  private spinner= inject(NgxSpinnerService)
-  constructor() { }
+  private loadingCount = 0;
 
-  loading() { 
-    this.loaddigRequestCount++
+  private spinner = inject(NgxSpinnerService)
+
+
+  loading() {
+    this.loadingCount++
+    console.log('Loading started, count:', this.loadingCount)
     this.spinner.show(undefined, {
-      type: "square-jelly-box" ,
-      bdColor: 'rgba(0, 0, 0, 0.8)',
-      color: '#fff',
+      type: "fire",
+      bdColor: 'rgba(100, 24, 215, 0.8)',
+      color: 'rgba(0, 0, 0, 0.8)',
       fullScreen: false
     })
   }
-  
+
   idle() {
-    this.loaddigRequestCount--
-    if (this.loaddigRequestCount <= 0) {
-      this.loaddigRequestCount = 0
+    this.loadingCount = Math.max(0, this.loadingCount - 1)
+    console.log('Loading stopped, count:', this.loadingCount)
+    if (this.loadingCount === 0) {
       this.spinner.hide()
     }
   }

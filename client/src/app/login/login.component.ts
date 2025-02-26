@@ -8,11 +8,10 @@ import { MatDatepickerModule } from '@angular/material/datepicker'
 import { MatRadioModule } from '@angular/material/radio'
 import { provideNativeDateAdapter } from '@angular/material/core'
 import { MatCardModule } from '@angular/material/card'
-
-import { Router } from '@angular/router'
 import { AccountService } from '../_services/account.service'
-import { PasswordMatchValidator } from '../_validator/password.matdc.validator'
-import { PasswordValidator } from '../_validator/password.validator'
+import { Router } from '@angular/router'
+import { PasswordValidator } from '../_helper/password.validator'
+import { PasswordMatchValidator } from '../_validator/password.match.validator'
 
 @Component({
   selector: 'app-login',
@@ -42,7 +41,7 @@ export class LoginComponent {
 
   constructor() {
     this.form = new FormGroup({
-      username: new FormControl(null, [Validators.required, Validators.minLength(3), Validators.maxLength(9)]),
+      username: new FormControl(null, [Validators.required, Validators.minLength(6), Validators.maxLength(16)]),
       password: new FormControl(null, [Validators.required, PasswordValidator(8, 16)]),
     })
   }

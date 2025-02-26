@@ -1,11 +1,24 @@
 .member-item {
     margin-top: 10px;
-    margin-left: 5 px;
-    margin-right: 5px;
     max-width: 350px;
-  }
-  .memeber-list {
+    margin-left: 5px;
+}
+
+.member-list {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
+    flex-direction: row;
+}
+
+.member-card {
+    margin: 1em;
+
+    .headre-image {
+        background-size: cover;
+    }
+}
+
+.photoOfTheDay {
+    margin: 1em;
+    max-width: 350px;
+    width: 300px;
+}
